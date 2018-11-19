@@ -8,14 +8,16 @@ import (
 	"github.com/geosoft1/token"
 )
 
+var (
+	port      = flag.String("port", "8080", "port")
+	token_len = flag.Int("len", 8, "token length")
+)
+
 func main() {
-	ip := flag.String("ip", "", "ip")
-	port := flag.Int("port", 8084, "port")
-	token_len := flag.Int("len", 6, "token length")
 	flag.Parse()
-	http.HandleFunc("/token",
+	http.HandleFunc("/token_gen",
 		func(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, token.GetToken(*token_len))
 		})
-	http.ListenAndServe(fmt.Sprintf("%s:%d", *ip, *port), nil)
+	http.ListenAndServe(":"+*port, nil)
 }
